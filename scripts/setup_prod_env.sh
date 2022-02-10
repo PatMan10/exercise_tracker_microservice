@@ -1,0 +1,4 @@
+#! /bin/bash
+
+export URL_SHORTENER_SERVICE_ENV="prod"
+export URL_SHORTENER_SERVICE_PORT=8000

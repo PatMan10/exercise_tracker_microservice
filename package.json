@@ -1,0 +1,12 @@
+{
+  "name": "exercise_tracker_microservice",
+  "version": "0.0.0",
+  "description": "FreeCodeCamp APIs Project 4: Exercise Tracker Microservice",
+  "main": "src/main/code/app.ts",
+  "repository": "https://github.com/PatMan10/exercise_tracker_microservice",
+  "author": "PatMan10",
+  "scripts": {
+    "start": "deno run --allow-net --allow-read --allow-env --watch src/main/code/app.ts",
+    "test": "deno test --allow-net --allow-read --allow-env --unstable"
+  }
+}
