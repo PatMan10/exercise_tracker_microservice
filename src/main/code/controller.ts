@@ -46,7 +46,9 @@ controller.post(
   URLs.POST_EXERCISE,
   async (ctx) => {
     const { userId } = ctx.params;
-    const { description, duration, date } = await parseBody(ctx);
+    const body = await parseBody(ctx);
+    const { description, duration, date } = body;
+    console.log(`parseBody =======> `, body);
     const user = getUser(userId);
     const exercise = new Exercise(
       description,
@@ -56,8 +58,10 @@ controller.post(
     saveExercise(userId, exercise);
 
     // 201 success
+    const combined = { ...user, ...exercise };
+    console.log(`combined =======> `, combined);
     ctx.response.status = StatusCodes.CREATED.valueOf();
-    ctx.response.body = { ...user, ...exercise };
+    ctx.response.body = combined;
   },
 );
 
