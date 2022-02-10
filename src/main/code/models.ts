@@ -13,7 +13,7 @@ export class User {
 }
 
 const users = new Map<string, User>();
-const AI = new User(undefined, "AI");
+export const AI = new User(undefined, "AI");
 users.set(AI._id, AI);
 
 export const saveUser = (user: User): void => {
@@ -26,4 +26,29 @@ export const getUsers = (): User[] => Array.from(users, ([_k, v]) => v);
 
 export const deleteUser = (_id: string): void => {
   users.delete(_id);
+};
+
+export interface IExercise extends IUser {
+  description: string;
+  duration: number;
+  date: string;
+}
+
+export class Exercise {
+  constructor(
+    public description: string,
+    public duration: number,
+    public date: string = new Date().toDateString(),
+  ) {}
+}
+
+const exercises = new Map<string, Exercise[]>();
+
+export const saveExercise = (userId: string, exercise: Exercise): void => {
+  const userExercises = exercises.get(userId);
+  if (!userExercises) {
+    exercises.set(userId, [exercise]);
+    return;
+  }
+  userExercises.push(exercise);
 };

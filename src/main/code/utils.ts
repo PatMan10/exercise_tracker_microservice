@@ -1,6 +1,6 @@
 // urls
 export enum URLPlaceHolder {
-  ID = ":_id",
+  USER_ID = ":userId",
 }
 
 export class URLs {
@@ -8,7 +8,12 @@ export class URLs {
   static readonly INDEX = "/";
 
   static readonly GET_USERS = `/api/users`;
-  static readonly POST_NEW_USER = `/api/users`;
+  static readonly POST_USER = `/api/users`;
+  static readonly POST_EXERCISE =
+    `/api/users/${URLPlaceHolder.USER_ID}/exercises`;
+
+  static postExercise = (userId: string): string =>
+    URLs.POST_EXERCISE.replace(URLPlaceHolder.USER_ID, userId);
 }
 
 export class ErrorMessages {

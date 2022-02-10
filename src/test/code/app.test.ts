@@ -1,7 +1,13 @@
 import { Bson, Rhum, StatusCodes, superoak } from "../../deps.ts";
 import app from "../../main/code/app.ts";
 import { URLs } from "../../main/code/utils.ts";
-import { IUser, User } from "../../main/code/models.ts";
+import {
+  AI,
+  Exercise,
+  IExercise,
+  IUser,
+  User,
+} from "../../main/code/models.ts";
 
 const { assertEquals, assertExists } = Rhum.asserts;
 
@@ -27,9 +33,9 @@ Rhum.testPlan(
       });
     });
 
-    Rhum.testSuite(`---------- POST ${URLs.POST_NEW_USER} ----------`, () => {
+    Rhum.testSuite(`---------- POST ${URLs.POST_USER} ----------`, () => {
       const exec = async (user: IUser) =>
-        (await superoak(app)).post(URLs.POST_NEW_USER).send(user);
+        (await superoak(app)).post(URLs.POST_USER).send(user);
 
       Rhum.testCase("201 success, return saved user\n", async () => {
         const newUser = { username: "username" };
@@ -40,6 +46,24 @@ Rhum.testPlan(
         assertExists(user._id);
         assertEquals(Bson.ObjectID.isValid(user._id), true);
         assertEquals(user.username, newUser.username);
+      });
+    });
+
+    Rhum.testSuite(`---------- POST ${URLs.POST_EXERCISE} ----------`, () => {
+      const exec = async (userId: string, exercise: Exercise) =>
+        (await superoak(app)).post(URLs.postExercise(userId)).send(exercise);
+
+      Rhum.testCase("201 success, return saved exercise\n", async () => {
+        const newExercise = new Exercise("skip roap", 20);
+        const res = await exec(AI._id, newExercise);
+        const exercise: IExercise = res.body;
+
+        assertEquals(res.status, StatusCodes.CREATED);
+        assertEquals(exercise._id, AI._id);
+        assertEquals(exercise.username, AI.username);
+        assertEquals(exercise.description, newExercise.description);
+        assertEquals(exercise.duration, newExercise.duration);
+        assertExists(exercise.date);
       });
     });
   },

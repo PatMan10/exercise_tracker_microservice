@@ -1,5 +1,12 @@
 import { Router, StatusCodes } from "../../deps.ts";
-import { getUsers, saveUser, User } from "./models.ts";
+import {
+  Exercise,
+  getUser,
+  getUsers,
+  saveExercise,
+  saveUser,
+  User,
+} from "./models.ts";
 import { URLs } from "./utils.ts";
 import { parseBody } from "./middleware.ts";
 import { IndexPage } from "./ui.ts";
@@ -16,7 +23,7 @@ controller.get(URLs.GET_USERS, (ctx) => {
 });
 
 controller.post(
-  URLs.POST_NEW_USER,
+  URLs.POST_USER,
   async (ctx) => {
     const { username } = await parseBody(ctx);
     const user = new User(undefined, username);
@@ -24,6 +31,21 @@ controller.post(
     // 201 success
     ctx.response.status = StatusCodes.CREATED.valueOf();
     ctx.response.body = user;
+  },
+);
+
+controller.post(
+  URLs.POST_EXERCISE,
+  async (ctx) => {
+    const { userId } = ctx.params;
+    const { description, duration, date } = await parseBody(ctx);
+    const user = getUser(userId);
+    const exercise = new Exercise(description, duration, date);
+    saveExercise(userId, exercise);
+
+    // 201 success
+    ctx.response.status = StatusCodes.CREATED.valueOf();
+    ctx.response.body = { ...user, ...exercise };
   },
 );
 
