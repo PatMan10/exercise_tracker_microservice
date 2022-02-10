@@ -1,5 +1,9 @@
 import { Bson } from "../../deps.ts";
 
+//####################
+// User
+//####################
+
 export interface iUser {
   readonly _id?: string;
   username: string;
@@ -23,6 +27,10 @@ export const saveUser = (user: User): void => {
 export const getUser = (_id: string): User | undefined => users.get(_id);
 
 export const getUsers = (): User[] => Array.from(users, ([_k, v]) => v);
+
+//####################
+// Exercise
+//####################
 
 export interface iExercise extends iUser {
   description: string;
