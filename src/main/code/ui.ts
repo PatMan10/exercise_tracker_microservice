@@ -78,11 +78,11 @@ export const IndexPage = () => `
       <h1>Exercise Tracker Microservice</h1>
     </header>
 
-    <main>
-      <div id="form-container" class="flex-col-aiC mb-4">
-        <h2>Get Users Exercise Log</h2>
-        <span class="mb-4">Example: GET [project_url]/api/users/:_id/logs?[from][&to][&limit]</span>
+    <main class="flex-col-aiC">
+      <h2>Get Users Exercise Log</h2>
+      <span class="mb-4">Example: GET [project_url]/api/users/:_id/logs?[from][&to][&limit]</span>
 
+      <div id="form-container" class="flex-col-aiC mb-4">
         <form id="user-form" action="api/users" method="post" class="mb-5">
           <fieldset class="url-fieldset">
             <legend>User</legend>
