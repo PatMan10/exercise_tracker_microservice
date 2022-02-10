@@ -21,6 +21,7 @@ controller.get(URLs.INDEX, (ctx) => {
 });
 
 controller.get(UserURLs.GET_USERS, (ctx) => {
+  // 200 success
   ctx.response.body = getUsers();
 });
 
@@ -31,6 +32,8 @@ controller.get(UserURLs.GET_EXERCISE_LOG, (ctx) => {
   if (exercises) {
     exercises = filterExercises(exercises, ctx.request.url.searchParams);
   }
+
+  // 200 success
   ctx.response.body = {
     ...user,
     count: exercises?.length,
@@ -44,6 +47,7 @@ controller.post(
     const { username } = await parseBody(ctx);
     const user = new User(undefined, username);
     saveUser(user);
+
     // 201 success
     ctx.response.status = StatusCodes.CREATED.valueOf();
     ctx.response.body = user;
