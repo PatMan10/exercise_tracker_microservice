@@ -65,7 +65,7 @@ Rhum.testPlan(
             params.set("from", "2003-01-01");
             params.set("to", "2007-12-30");
             params.set("limit", "4");
-            const res = await exec(AI._id);
+            const res = await exec(AI._id, params);
             const exerciseLog: iExerciseLog = res.body;
 
             assertEquals(res.status, StatusCodes.OK);

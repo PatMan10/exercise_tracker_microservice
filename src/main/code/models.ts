@@ -95,11 +95,7 @@ export const filterExercises = (
     if (limit > _exercises.length) {
       return _exercises;
     }
-    const newList = [];
-    for (let i = 0; i < limit; i++) {
-      newList.push(_exercises[i]);
-    }
-    return newList;
+    return _exercises.slice(0, limit);
   }
   return _exercises;
 };
