@@ -49,10 +49,14 @@ export class Exercise {
 }
 
 const exercises = new Map<string, Exercise[]>();
-export const aiExercises = [
-  new Exercise("yoga", 60),
-  new Exercise("skip rope", 20),
-];
+export const aiExercises: Exercise[] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+  .map((i) =>
+    new Exercise(
+      `exercise ${i}`,
+      i * 10,
+      `200${i}-0${i}-0${i}`,
+    )
+  );
 exercises.set(AI._id, aiExercises);
 
 export const saveExercise = (userId: string, exercise: Exercise): void => {
@@ -66,3 +70,36 @@ export const saveExercise = (userId: string, exercise: Exercise): void => {
 
 export const getUserExercises = (userId: string): Exercise[] | undefined =>
   exercises.get(userId);
+
+export const filterExercises = (
+  exercises: Exercise[],
+  params: URLSearchParams,
+): Exercise[] => {
+  let _exercises = exercises;
+  const _from = params.get("from");
+  const _to = params.get("to");
+  const _limit = params.get("limit");
+
+  if (_from) {
+    const from = new Date(_from).getTime();
+    _exercises = _exercises.filter((e) => new Date(e.date).getTime() >= from);
+  }
+
+  if (_to) {
+    const to = new Date(_to).getTime();
+    _exercises = _exercises.filter((e) => new Date(e.date).getTime() <= to);
+  }
+
+  if (_limit) {
+    const limit = Number(_limit);
+    if (limit > _exercises.length) {
+      return _exercises;
+    }
+    const newList = [];
+    for (let i = 0; i < limit; i++) {
+      newList.push(_exercises[i]);
+    }
+    return newList;
+  }
+  return _exercises;
+};

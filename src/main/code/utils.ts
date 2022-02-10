@@ -6,20 +6,26 @@ export enum URLPlaceHolder {
 export class URLs {
   static readonly WILD = "*";
   static readonly INDEX = "/";
+}
 
-  static readonly GET_USERS = `/api/users`;
-  static readonly GET_EXERCISE_LOG =
-    `/api/users/${URLPlaceHolder.USER_ID}/logs`;
+export class UserURLs {
+  private static ROOT = "/api/users";
 
-  static readonly POST_USER = `/api/users`;
-  static readonly POST_EXERCISE =
-    `/api/users/${URLPlaceHolder.USER_ID}/exercises`;
+  static readonly GET_USERS = UserURLs.ROOT;
+  static readonly GET_EXERCISE_LOG = UserURLs.ROOT +
+    `/${URLPlaceHolder.USER_ID}/logs`;
+
+  static readonly POST_USER = UserURLs.ROOT;
+  static readonly POST_EXERCISE = UserURLs.ROOT +
+    `/${URLPlaceHolder.USER_ID}/exercises`;
 
   static postExercise = (userId: string): string =>
-    URLs.POST_EXERCISE.replace(URLPlaceHolder.USER_ID, userId);
+    UserURLs.POST_EXERCISE.replace(URLPlaceHolder.USER_ID, userId);
 
-  static getExerciseLog = (userId: string): string =>
-    URLs.GET_EXERCISE_LOG.replace(URLPlaceHolder.USER_ID, userId);
+  static getExerciseLog = (userId: string, params?: URLSearchParams): string =>
+    UserURLs.GET_EXERCISE_LOG
+      .replace(URLPlaceHolder.USER_ID, userId)
+      .concat(params ? `?${params.toString()}` : "");
 }
 
 export class ErrorMessages {

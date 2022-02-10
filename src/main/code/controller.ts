@@ -1,6 +1,7 @@
 import { Router, StatusCodes } from "../../deps.ts";
 import {
   Exercise,
+  filterExercises,
   getUser,
   getUserExercises,
   getUsers,
@@ -8,7 +9,7 @@ import {
   saveUser,
   User,
 } from "./models.ts";
-import { URLs } from "./utils.ts";
+import { URLs, UserURLs } from "./utils.ts";
 import { parseBody } from "./middleware.ts";
 import { IndexPage } from "./ui.ts";
 
@@ -19,20 +20,26 @@ controller.get(URLs.INDEX, (ctx) => {
   ctx.response.body = IndexPage();
 });
 
-controller.get(URLs.GET_USERS, (ctx) => {
+controller.get(UserURLs.GET_USERS, (ctx) => {
   ctx.response.body = getUsers();
 });
 
-controller.get(URLs.GET_EXERCISE_LOG, (ctx) => {
-  console.log(`searchParams ====> ` + ctx.request.url.searchParams);
+controller.get(UserURLs.GET_EXERCISE_LOG, (ctx) => {
   const { userId } = ctx.params;
   const user = getUser(userId);
-  const exercises = getUserExercises(userId);
-  ctx.response.body = { ...user, count: exercises?.length, log: exercises };
+  let exercises = getUserExercises(userId);
+  if (exercises) {
+    exercises = filterExercises(exercises, ctx.request.url.searchParams);
+  }
+  ctx.response.body = {
+    ...user,
+    count: exercises?.length,
+    log: exercises,
+  };
 });
 
 controller.post(
-  URLs.POST_USER,
+  UserURLs.POST_USER,
   async (ctx) => {
     const { username } = await parseBody(ctx);
     const user = new User(undefined, username);
@@ -44,7 +51,7 @@ controller.post(
 );
 
 controller.post(
-  URLs.POST_EXERCISE,
+  UserURLs.POST_EXERCISE,
   async (ctx) => {
     const { userId } = ctx.params;
     const body = await parseBody(ctx);
