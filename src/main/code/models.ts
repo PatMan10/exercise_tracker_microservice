@@ -36,11 +36,16 @@ export interface iExerciseLog extends iUser {
 }
 
 export class Exercise {
+  public date: string;
   constructor(
     public description: string,
     public duration: number,
-    public date: string = new Date().toDateString(),
-  ) {}
+    date?: string,
+  ) {
+    this.date = date
+      ? new Date(date).toDateString()
+      : new Date().toDateString();
+  }
 }
 
 const exercises = new Map<string, Exercise[]>();

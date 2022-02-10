@@ -78,7 +78,7 @@ Rhum.testPlan(
         (await superoak(app)).post(URLs.postExercise(userId)).send(exercise);
 
       Rhum.testCase("201 success, return saved exercise\n", async () => {
-        const newExercise = new Exercise("skip roap", 20);
+        const newExercise = new Exercise("skip roap", 20, "1995-09-30");
         const res = await exec(AI._id, newExercise);
         const exercise: iExercise = res.body;
 
