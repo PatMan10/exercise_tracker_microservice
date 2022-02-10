@@ -24,6 +24,7 @@ controller.get(URLs.GET_USERS, (ctx) => {
 });
 
 controller.get(URLs.GET_EXERCISE_LOG, (ctx) => {
+  console.log(`searchParams ====> ` + ctx.request.url.searchParams);
   const { userId } = ctx.params;
   const user = getUser(userId);
   const exercises = getUserExercises(userId);
@@ -48,8 +49,6 @@ controller.post(
     const { userId } = ctx.params;
     const body = await parseBody(ctx);
     const { description, duration, date } = body;
-    console.log(`parseBody =======> `, body);
-    console.log(`date =======> `, date);
     const user = getUser(userId);
     const exercise = new Exercise(
       description,
@@ -60,7 +59,6 @@ controller.post(
 
     // 201 success
     const combined = { ...user, ...exercise };
-    console.log(`combined =======> `, combined);
     ctx.response.status = StatusCodes.CREATED.valueOf();
     ctx.response.body = combined;
   },
