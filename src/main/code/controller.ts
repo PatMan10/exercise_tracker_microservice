@@ -2,6 +2,7 @@ import { Router, StatusCodes } from "../../deps.ts";
 import {
   Exercise,
   getUser,
+  getUserExercises,
   getUsers,
   saveExercise,
   saveUser,
@@ -20,6 +21,13 @@ controller.get(URLs.INDEX, (ctx) => {
 
 controller.get(URLs.GET_USERS, (ctx) => {
   ctx.response.body = getUsers();
+});
+
+controller.get(URLs.GET_EXERCISE_LOG, (ctx) => {
+  const { userId } = ctx.params;
+  const user = getUser(userId);
+  const exercises = getUserExercises(userId);
+  ctx.response.body = { ...user, count: exercises?.length, log: exercises };
 });
 
 controller.post(

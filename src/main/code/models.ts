@@ -24,14 +24,15 @@ export const getUser = (_id: string): User | undefined => users.get(_id);
 
 export const getUsers = (): User[] => Array.from(users, ([_k, v]) => v);
 
-export const deleteUser = (_id: string): void => {
-  users.delete(_id);
-};
-
 export interface iExercise extends iUser {
   description: string;
   duration: number;
   date: string;
+}
+
+export interface iExerciseLog extends iUser {
+  count: number;
+  log: Exercise[];
 }
 
 export class Exercise {
@@ -43,6 +44,11 @@ export class Exercise {
 }
 
 const exercises = new Map<string, Exercise[]>();
+export const aiExercises = [
+  new Exercise("yoga", 60),
+  new Exercise("skip rope", 20),
+];
+exercises.set(AI._id, aiExercises);
 
 export const saveExercise = (userId: string, exercise: Exercise): void => {
   const userExercises = exercises.get(userId);
@@ -52,3 +58,6 @@ export const saveExercise = (userId: string, exercise: Exercise): void => {
   }
   userExercises.push(exercise);
 };
+
+export const getUserExercises = (userId: string): Exercise[] | undefined =>
+  exercises.get(userId);
