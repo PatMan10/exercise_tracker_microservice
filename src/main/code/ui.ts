@@ -5,10 +5,6 @@ const css = () => `
 }
 
 body {
-  align-items: center;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
   font-family: "Roboto", sans-serif;
 }
 
@@ -39,23 +35,27 @@ form {
   width: 80%;
 }
 
-input[id="url-input"] {
+input[type="date"],
+input[type="text"],
+input[type="number"] {
   height: 25px;
+  margin-bottom: 1rem;
   width: 250px;
   text-align: center;
 }
 
 input[id="submit"] {
   height: 25px;
-  width: 80px;
+  width: 120px;
   text-align: center;
 }
 
-.url-fieldset {
+fieldset {
+  border-radius: 6px;
   padding: 20px;
 }
 
-.url-fieldset > legend {
+fieldset > legend {
   text-align: center;
 }
 `;
@@ -65,7 +65,7 @@ export const IndexPage = () => `
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>URL Shortener Service</title>
+    <title>Exercise Tracker Service</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -73,26 +73,42 @@ export const IndexPage = () => `
     />
     <style>${css()}</style>
   </head>
-  <body>
+  <body class="flex-col-aiC white-bg">
     <header class="flex-col-aiC">
-      <h1>URL Shortener Microservice</h1>
+      <h1>Exercise Tracker Microservice</h1>
     </header>
 
     <main>
       <div id="form-container" class="flex-col-aiC mb-4">
-        <h2>Short Url Creation</h2>
-        <span class="mb-4">Example: POST [project_url]/api/shorturl - https://www.google.com</span>
+        <h2>Get Users Exercise Log</h2>
+        <span class="mb-4">Example: GET [project_url]/api/users/:_id/logs?[from][&to][&limit]</span>
 
-        <form action="api/shorturl" method="post">
+        <form id="user-form" action="api/users" method="post" class="mb-5">
           <fieldset class="url-fieldset">
-            <legend>URL Shortener</legend>
-            <div class="flex-row-aiC flex-jcSE">
-              <label for="url-input">URL</label>
-              <input id="url-input" name="url" type="text" placeholder="https://freecodecamp.org/" />
+            <legend>User</legend>
+            <div class="flex-col-aiC flex-jcSE">
+              <input id="username-input" name="username" type="text" placeholder="username"/>
               <input 
                 id="submit"
                 type="submit" 
-                value="POST URL" 
+                value="Submit" 
+                />
+            </div>
+          </fieldset>
+        </form>
+
+        <form id="exercise-form"  method="post">
+          <fieldset class="url-fieldset">
+            <legend>Exercise</legend>
+            <div class="flex-col-aiC flex-jcSE">
+              <input id="user-id-input" name="user-id" type="text" placeholder="user id"/>
+              <input id="exercise-description-input" name="description" type="text" placeholder="description"/>
+              <input id="exercise-duration-input" name="duration" type="number" placeholder="duration"/>
+              <input id="exercise-date-input" name="date" type="date" placeholder="date"/>
+              <input 
+                id="submit"
+                type="submit" 
+                value="Submit" 
                 />
             </div>
           </fieldset>
@@ -105,6 +121,15 @@ export const IndexPage = () => `
           By <a href="https://github.com/PatMan10" target="_blank" rel="noopener noreferrer">PatMan10</a>
       </span>
     </footer>
+    <script>
+      const exerciseForm = document.getElementById("exercise-form");
+      exerciseForm.addEventListener("submit", () => {
+        const userId = document.getElementById("user-id-input").value;
+        exerciseForm.action = \`/api/users/\$\{userId\}/exercises\`;
+
+        exerciseForm.submit();
+      });
+    </script>
   </body>
 </html>
 `;
