@@ -1,6 +1,6 @@
 import { Bson } from "../../deps.ts";
 
-export interface IUser {
+export interface iUser {
   readonly _id?: string;
   username: string;
 }
@@ -28,7 +28,7 @@ export const deleteUser = (_id: string): void => {
   users.delete(_id);
 };
 
-export interface IExercise extends IUser {
+export interface iExercise extends iUser {
   description: string;
   duration: number;
   date: string;

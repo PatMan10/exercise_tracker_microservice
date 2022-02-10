@@ -4,8 +4,8 @@ import { URLs } from "../../main/code/utils.ts";
 import {
   AI,
   Exercise,
-  IExercise,
-  IUser,
+  iExercise,
+  iUser,
   User,
 } from "../../main/code/models.ts";
 
@@ -34,7 +34,7 @@ Rhum.testPlan(
     });
 
     Rhum.testSuite(`---------- POST ${URLs.POST_USER} ----------`, () => {
-      const exec = async (user: IUser) =>
+      const exec = async (user: iUser) =>
         (await superoak(app)).post(URLs.POST_USER).send(user);
 
       Rhum.testCase("201 success, return saved user\n", async () => {
@@ -56,7 +56,7 @@ Rhum.testPlan(
       Rhum.testCase("201 success, return saved exercise\n", async () => {
         const newExercise = new Exercise("skip roap", 20);
         const res = await exec(AI._id, newExercise);
-        const exercise: IExercise = res.body;
+        const exercise: iExercise = res.body;
 
         assertEquals(res.status, StatusCodes.CREATED);
         assertEquals(exercise._id, AI._id);
