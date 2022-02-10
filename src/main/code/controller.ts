@@ -49,11 +49,12 @@ controller.post(
     const body = await parseBody(ctx);
     const { description, duration, date } = body;
     console.log(`parseBody =======> `, body);
+    console.log(`date =======> `, date);
     const user = getUser(userId);
     const exercise = new Exercise(
       description,
-      duration,
-      new Date(date).toDateString(),
+      Number(duration),
+      date,
     );
     saveExercise(userId, exercise);
 
