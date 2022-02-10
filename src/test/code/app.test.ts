@@ -11,6 +11,22 @@ Rhum.testPlan(
   () => {
     console.log(title);
 
+    Rhum.testSuite(`---------- GET ${URLs.GET_USERS} ----------`, () => {
+      const exec = async () => (await superoak(app)).get(URLs.GET_USERS);
+
+      Rhum.testCase("200 success, return list of users\n", async () => {
+        const res = await exec();
+        const users: User[] = res.body;
+
+        assertEquals(res.status, StatusCodes.OK);
+        assertEquals(Array.isArray(users), true);
+        assertEquals(users.length > 0, true);
+        const user = users[0];
+        assertExists(user._id);
+        assertExists(user.username);
+      });
+    });
+
     Rhum.testSuite(`---------- POST ${URLs.POST_NEW_USER} ----------`, () => {
       const exec = async (user: IUser) =>
         (await superoak(app)).post(URLs.POST_NEW_USER).send(user);

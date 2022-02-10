@@ -7,6 +7,7 @@ export class URLs {
   static readonly WILD = "*";
   static readonly INDEX = "/";
 
+  static readonly GET_USERS = `/api/users`;
   static readonly POST_NEW_USER = `/api/users`;
 }
 
