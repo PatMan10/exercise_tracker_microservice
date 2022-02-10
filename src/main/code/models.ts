@@ -92,10 +92,7 @@ export const filterExercises = (
 
   if (_limit) {
     const limit = Number(_limit);
-    if (limit > _exercises.length) {
-      return _exercises;
-    }
-    return _exercises.slice(0, limit);
+    return limit > _exercises.length ? _exercises : _exercises.slice(0, limit);
   }
   return _exercises;
 };
