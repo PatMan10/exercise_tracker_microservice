@@ -48,7 +48,11 @@ controller.post(
     const { userId } = ctx.params;
     const { description, duration, date } = await parseBody(ctx);
     const user = getUser(userId);
-    const exercise = new Exercise(description, duration, date);
+    const exercise = new Exercise(
+      description,
+      duration,
+      new Date(date).toDateString(),
+    );
     saveExercise(userId, exercise);
 
     // 201 success
